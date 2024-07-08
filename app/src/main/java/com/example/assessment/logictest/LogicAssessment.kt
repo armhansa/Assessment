@@ -32,7 +32,8 @@ class LogicAssessment {
     fun findTripletsOfZero(numbers: List<Int>): Set<List<Int>> {
         if (numbers.size < 3) return emptySet()
 
-        val answer = arrayListOf<List<Int>>()
+        val answer = mutableSetOf<List<Int>>()
+
         // Separate for reduce complexity when N is big value
         val minusList = arrayListOf<Int>()
         val plusList = arrayListOf<Int>()
@@ -44,28 +45,23 @@ class LogicAssessment {
             }
         }
 
-        for (i in 0 until minusList.size - 1) {
-            for (j in i + 1 until minusList.size) {
-                val iValue = minusList[i]
-                val jValue = minusList[j]
-                val remainValue = -(iValue + minusList[j])
-                if (remainValue in plusList) {
-                    answer.add(listOf(iValue, jValue, remainValue))
-                }
-            }
-        }
+        addedAnswer(minusList, plusList, answer)
+        addedAnswer(plusList, minusList, answer)
 
-        for (i in 0 until plusList.size - 1) {
-            for (j in i + 1 until plusList.size) {
-                val iValue = plusList[i]
-                val jValue = plusList[j]
-                val remainValue = -(iValue + plusList[j])
-                if (remainValue in minusList) {
+        return answer.map { it.sorted() }.toSet()
+    }
+
+    private fun addedAnswer(firstList: List<Int>, secondList: List<Int>, answer: MutableSet<List<Int>>) {
+        for (i in 0 until firstList.size - 1) {
+            for (j in i + 1 until firstList.size) {
+                val iValue = firstList[i]
+                val jValue = firstList[j]
+                val remainValue = -(iValue + firstList[j])
+                if (remainValue in secondList) {
                     answer.add(listOf(iValue, jValue, remainValue))
                 }
             }
         }
-        return answer.map { it.sorted() }.toSet()
     }
 
 }
