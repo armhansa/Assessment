@@ -30,6 +30,8 @@ class LogicAssessment {
 
     // Assessment 3
     fun findTripletsOfZero(numbers: List<Int>): Set<List<Int>> {
+        if (numbers.size < 3) return emptySet()
+
         val answer = arrayListOf<List<Int>>()
         // Separate for reduce complexity when N is big value
         val minusList = arrayListOf<Int>()
